@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.system.SysRolePermMapper">
+
+    <resultMap id="CommonResultMap" type="sysRolePerm">
+        <id property="id" column="id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="permId" column="perm_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		srp.id,srp.role_id,srp.perm_id,srp.create_by,srp.create_time,srp.last_update_by,srp.last_update_time
+    </sql>
+
+    <!-- 查询角色权限列表 -->
+    <select id="findAll" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_perm srp
+    </select>
+
+    <!-- 添加角色权限角色 -->
+    <insert id="add">
+    	insert into sys_role_perm (`id`, `role_id`, `perm_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
+    	values (findNextFormatSeqVal('R','s_sys_role_perm_id'), #{entity.roleId}, #{entity.permId}, #{entity.createBy},
+    	 #{entity.createTime}, #{entity.lastUpdateBy}, #{entity.lastUpdateTime})
+    </insert>
+
+    <!-- 查询角色权限 -->
+    <select id="findByRid" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_perm srp where srp.role_id = #{roleId}
+    </select>
+
+    <!-- 查询角色权限 -->
+    <select id="findByRids" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_role_perm srp where srp.role_id in
+        <foreach item="role_id" collection="roleIds" open="(" separator="," close=")">
+            #{role_id}
+        </foreach>
+    </select>
+
+    <!-- 删除角色权限 -->
+    <delete id="deleteByIds">
+        delete from sys_role_perm srp where srp.role_id in
+        <foreach item="userId" collection="userIds" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+    <!-- 更新角色权限 -->
+    <update id="updateByRid">
+        update sys_role_perm
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.permId != null">`perm_id` = #{entity.permId},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+        </trim>
+        where `role_id` = #{entity.roleId} and `role_id` != '1'
+    </update>
+    
+</mapper>

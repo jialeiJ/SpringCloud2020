@@ -1,0 +1,107 @@
+package com.vienna.jaray.service.system.impl;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.vienna.jaray.common.ResponseResult;
+import com.vienna.jaray.entity.system.SysDept;
+import com.vienna.jaray.mapper.system.SysDeptMapper;
+import com.vienna.jaray.model.system.CommonParamsModel;
+import com.vienna.jaray.service.system.SysDeptService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+/**
+ * @author Jaray
+ * @date 2020年09月12日 13:58
+ * @description: 系统部门服务实现类
+ */
+@Service
+public class SysDeptServiceImpl implements SysDeptService {
+    @Autowired
+    private SysDeptMapper sysDeptMapper;
+
+    @Override
+    public ResponseResult findAllTop(CommonParamsModel commonParamsModel) {
+        //设置分页信息(第几页，每页数量)
+        if(commonParamsModel != null){
+            PageHelper.startPage(commonParamsModel.getPageNum(), commonParamsModel.getPageSize());
+        }
+
+        List<SysDept> topSysDeptList = sysDeptMapper.findAllTop(commonParamsModel);
+        List<SysDept> subSysDeptList = sysDeptMapper.findAllSub(commonParamsModel);
+    	topSysDeptList.forEach(sysDept -> {
+            List<SysDept> nextSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParentId().equals(sysDept.getId())).collect(Collectors.toList());
+            sysDept.setChildren(nextSysDepts);
+
+            sysDept.setChildren(getDeptChildren(nextSysDepts, subSysDeptList));
+        });
+        //取记录总条数
+        PageInfo<?> pageInfo = new PageInfo<>(topSysDeptList);
+        return ResponseResult.success().add("sysDepts", pageInfo);
+    }
+
+    @Override
+    public ResponseResult findById(String id) {
+        SysDept sysDeptEntity = sysDeptMapper.findById(id);
+        return ResponseResult.success().add("sysDept", sysDeptEntity);
+    }
+
+    @Override
+    public ResponseResult findByName(String name) {
+        SysDept sysDeptEntity = sysDeptMapper.findByName(name);
+        return ResponseResult.success().add("sysDept", sysDeptEntity);
+    }
+
+    @Override
+    public ResponseResult add(SysDept sysDeptEntity) {
+        ResponseResult responseResult = ResponseResult.fail();
+        int result = sysDeptMapper.add(sysDeptEntity);
+        if(result > 0){
+            responseResult = ResponseResult.success().add("sysDept", sysDeptEntity);
+        }
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult deleteByIds(String[] ids) {
+        ResponseResult responseResult = ResponseResult.fail();
+        int result = sysDeptMapper.deleteByIds(ids);
+        if(result > 0){
+            responseResult = ResponseResult.success().add("result", result);
+        }
+        return responseResult;
+    }
+
+    @Override
+    public ResponseResult updateById(SysDept sysDeptEntity) {
+        ResponseResult responseResult = ResponseResult.fail();
+        int result = sysDeptMapper.updateById(sysDeptEntity);
+        if(result > 0){
+            responseResult = ResponseResult.success().add("result", result);
+        }
+        return responseResult;
+    }
+
+    /**
+     * 递归取出所有关系树
+     * @param nextSysDepts  下一层部门列表
+     * @param subSysDeptList 子部门列表
+     * @return 所有关系树
+     */
+    private List<SysDept> getDeptChildren(List<SysDept> nextSysDepts, List<SysDept> subSysDeptList) {
+        nextSysDepts.forEach(nextSysDept -> {
+            List<SysDept> subSysDepts = subSysDeptList.stream().filter(subSysDept -> subSysDept.getParentId().equals(nextSysDept.getId())).collect(Collectors.toList());
+            if(CollectionUtils.isNotEmpty(subSysDepts)){
+                nextSysDept.setChildren(subSysDepts);
+            }
+        });
+        return nextSysDepts;
+    }
+}

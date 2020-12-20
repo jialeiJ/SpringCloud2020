@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.vod.VideoMapper">
+
+    <resultMap id="CommonResultMap" type="video">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="category" column="category"/>
+        <result property="videoId" column="video_id"/>
+        <result property="videoAddr" column="video_addr"/>
+    </resultMap>
+	
+	<sql id="Base_Column_List" >
+		v.id,v.name,v.category,v.video_id,v.video_addr
+    </sql>
+
+    <!-- 查询视频列表 -->
+    <select id="findAll" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from online_education_video v
+        <where>
+            <if test="common.search != null and common.search != ''"> u.name = #{common.search}</if>
+        </where>
+    </select>
+
+    <!-- 添加视频 -->
+    <insert id="add">
+    	insert into online_education_video (`id`, `name`, `category`, `video_id`, `video_addr`)
+    	values (null, #{entity.name}, #{entity.category}, #{entity.video_id}, #{entity.video_addr})
+    </insert>
+
+    <!-- 查询视频 -->
+    <select id="findById" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from online_education_video v where v.id = #{id}
+    </select>
+
+    <!-- 查询视频 -->
+    <select id="findByName" resultMap="CommonResultMap">
+       select 
+       	   <include refid="Base_Column_List" />
+       from online_education_video v where v.name = #{name}
+    </select>
+
+    <!-- 删除视频 -->
+    <delete id="deleteByIds">
+        delete from online_education_video v where v.id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+    
+    <!-- 更新视频 -->
+    <update id="updateById">
+        update online_education_video
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.name != null">`name` = #{entity.name},</if>
+            <if test="entity.category != null">`category` = #{entity.category},</if>
+            <if test="entity.video_id != null">`video_id` = #{entity.video_id},</if>
+            <if test="entity.video_addr != null">`video_addr` = #{entity.video_addr},</if>
+        </trim>
+        where `id` = #{entity.id}
+    </update>
+    
+</mapper>

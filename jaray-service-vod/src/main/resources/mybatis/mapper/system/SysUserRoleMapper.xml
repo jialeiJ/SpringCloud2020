@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vienna.jaray.mapper.system.SysUserRoleMapper">
+
+    <resultMap id="CommonResultMap" type="sysUserRole">
+        <id property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="createBy" column="create_by"/>
+        <result property="createTime" column="create_time"/>
+        <result property="lastUpdateBy" column="last_update_by"/>
+        <result property="lastUpdateTime" column="last_update_time"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+		r.id,r.user_id,r.role_id,r.create_by,r.create_time,r.last_update_by,r.last_update_time
+    </sql>
+
+    <!-- 查询用户角色列表 -->
+    <select id="findAll" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role r
+    </select>
+
+    <!-- 添加用户角色 -->
+    <insert id="add">
+    	insert into sys_user_role (`id`, `user_id`, `role_id`, `create_by`, `create_time`, `last_update_by`, `last_update_time`)
+    	values (findNextFormatSeqVal('R','s_sys_user_role_id'), #{entity.userId}, #{entity.roleId}, #{entity.createBy},
+    	 #{entity.createTime}, #{entity.lastUpdateBy}, #{entity.lastUpdateTime})
+    </insert>
+
+    <!-- 查询用户角色 -->
+    <select id="findByUserId" resultMap="CommonResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from sys_user_role r where r.user_id = #{user_id}
+    </select>
+
+    <!-- 删除用户角色 -->
+    <delete id="deleteByIds">
+        delete from sys_user_role r where r.id in
+        <foreach item="id" collection="ids" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 更新用户角色 -->
+    <update id="updateById">
+        update sys_user_role
+        <trim prefix="set" suffixOverrides=",">
+            <if test="entity.roleId != null">`role_id` = #{entity.roleId},</if>
+            <if test="entity.createBy != null">`create_by` = #{entity.createBy},</if>
+            <if test="entity.createTime != null">`create_time` = #{entity.createTime},</if>
+            <if test="entity.lastUpdateBy != null">`last_update_by` = #{entity.lastUpdateBy},</if>
+            <if test="entity.lastUpdateTime != null">`last_update_time` = #{entity.lastUpdateTime},</if>
+        </trim>
+        where `id` = #{entity.id}
+    </update>
+    
+</mapper>

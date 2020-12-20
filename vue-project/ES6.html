@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="IE=edge" >
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+  <title>Aliplayer Functions</title>
+  <link rel="stylesheet" href="https://g.alicdn.com/de/prismplayer/2.9.1/skins/default/aliplayer-min.css" />
+  <script type="text/javascript" charset="utf-8" src="https://g.alicdn.com/de/prismplayer/2.9.1/aliplayer-min.js"></script>
+</head>
+<body>
+<div id="player-con"></div>
+<script>
+  var player = new Aliplayer({
+    id: "player-con",
+    source: "https://outin-04074955395d11eb99ff00163e1c35d5.oss-cn-shanghai.aliyuncs.com/sv/39bf18fe-17647a8380f/39bf18fe-17647a8380f.mp3?Expires=1607796294&OSSAccessKeyId=LTAIrkwb21KyGjJl&Signature=2%2FwcY0Q%2FL0tXxomR7Sz8z0W8fpA%3D",
+    width: "100%",
+    height: "500px",
+    autoplay: true,
+    isLive: false,
+    autoPlayDelay: 5,
+    autoPlayDelayDisplayText: '请等待...'
+  }, function (player) {
+    console.log("The player is created");
+  });
+</script>
+<script>
+        // 定义变量特点
+        {
+            var a = 10;  // 全局变量
+            let b = 100; // 局部变量
+        }
+        console.log(a);
+        // console.log(b); // Uncaught ReferenceError: b is not defined
+        
+    
+        {
+            var m = 10;
+            var m = 20;
+    
+            let n = 10;
+            // let n = 20;
+    
+            console.log(a);
+            console.log(m); // es6.html:18 Uncaught SyntaxError: Identifier 'n' has already been declared
+        }
+    
+        {
+            const PI = '3.1415926';
+            console.log(PI);
+        }
+        
+        // 数组解构
+        {
+            // 传统
+            let a = 1, b = 2, c = 3;
+            console.log(a, b, c);
+    
+            // ES6
+            let [x, y, z] = [1, 2, 3]
+            console.log(x, y, z);
+        }
+    
+        // 对象解构
+        {
+            // 传统
+            let user = {name: 'jaray',age: 26};
+            let tmpName = user.name;
+            let tmpAge = user.age;
+            console.log(tmpName, tmpAge);
+    
+            // ES6
+            let { name, age } = user;
+            console.log(name, age);
+        }
+    
+        {
+            // 1、使用`换行
+            let str = `Hello,
+            Jaray And ES6!`
+            console.log(str);
+    
+            // 2、在`符号中使用表达式获取变量值
+            let name = 'Jaray';
+            let age = 26;
+            let s = `hello ${name}, age ${age + 1}`
+            console.log(s);
+    
+            // 3、在`符号中调用方法
+            hello = function() {
+                return 'Hello Jaray';
+            }
+            let fu = `test, ${hello()}`;
+            console.log(fu);
+        }
+    
+        // 声明对象
+        {
+            // 传统
+            let name = 'jaray';
+            let age = 26;
+            let p = {name: name, age: age};
+            console.log(p);
+    
+            // ES6
+            let u = {name, age};
+            console.log(u);
+        }
+    
+        // 方法定义
+        {
+            let person = {
+                // 传统
+                sayHi: function(){
+                    console.log('hi, jaray!');
+                },
+                // ES6
+                hello(){
+                    console.log('hello, jaray!');
+                }
+            }
+    
+            // 调用
+            person.sayHi();
+            person.hello();
+        }
+    
+        {
+            // 对象复制
+            let person = {"name": 'jaray', "age": 26};
+            let person1 = {...person};
+            console.log(person);
+    
+            // 对象合并
+            let name = {name: 'jaray'};
+            let age = {age: 26};
+            let person2 = {...name, ...age}
+            console.log(person2);
+        }
+        
+        // 箭头函数
+        {
+            // 传统
+            var f1 = function(a){
+                return a;
+            }
+            console.log('f1=' + f1(1));
+    
+            // ES6
+            var f2 = a => a+1;
+            console.log('f2=' + f2(2));
+    
+            // 传统
+            var f3 = function(a, b) {
+                return a + b;
+            }
+            console.log('f3=' + f3(2,3));
+    
+            // ES6
+            var f4 = (a, b) => a+b;
+            console.log('f4=' + f4(3,4));
+        }
+    
+    </script>
+</body>
+</html>
