@@ -6,10 +6,10 @@
             @cancel="handleCancel">
             <a-form-model :model="viewForm" layout="horizontal" :label-col="labelCol" :wrapper-col="wrapperCol">
                 <a-form-model-item label="类型">
-                    <el-radio-group v-model="viewForm.type" disabled>
-                        <el-radio :label="0">目录</el-radio>
-                        <el-radio :label="1">菜单</el-radio>
-                    </el-radio-group>
+                    <a-radio-group v-model="viewForm.type" disabled>
+                        <a-radio :value="0">目录</a-radio>
+                        <a-radio :value="1">菜单</a-radio>
+                    </a-radio-group>
                 </a-form-model-item>
                 <a-form-model-item label="ID">
                     <a-input v-model="viewForm.id" disabled></a-input>
@@ -75,7 +75,7 @@ import MENU_API from '@api/api_sys_menu'
 
 export default {
     name: 'viewSysMenu',
-    props: { dirTreeData: Array },
+    props: { dirTreeData: Array, tileMenuData: Array },
     components: {},
     data () {
         return {
@@ -83,7 +83,6 @@ export default {
             wrapperCol: { span: 14 },
             viewDialogFormVisible: false,
             viewForm: {},
-            tileMenuData: [],
             // 菜单ids,用于回显
             menuIds: [],
             menuPids: [],

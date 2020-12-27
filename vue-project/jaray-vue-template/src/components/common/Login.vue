@@ -10,10 +10,10 @@
             </a-form-model-item>
             <a-form-model-item laba="" prop="captcha">
                 <a-row :gutter="20">
-                    <a-col :span="14">
-                        <a-input type="text" size="large" placeholder="验证码,单击图片刷新" v-model="loginForm.captcha"/>
-                    </a-col>
                     <a-col :span="10">
+                        <a-input type="text" size="large" placeholder="验证码" v-model="loginForm.captcha"/>
+                    </a-col>
+                    <a-col :span="14">
                         <img id="imagecode" :src="checkCodeSrc" @click="reloadCode"></img>
                     </a-col>
                 </a-row>

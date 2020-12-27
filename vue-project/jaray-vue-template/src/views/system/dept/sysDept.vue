@@ -12,7 +12,7 @@
                 <a-button type="danger" v-if="hasPermission('sys:dept:delete')" @click="deleteSysDept" plain>删除</a-button>
             </div>
             <i-table ref="iTable" 
-                @transmitParent="receiveChild"
+                @transmit_parent="receiveChild"
                 :tableTitle="tableTitle" 
                 :tableData="tableData"
                 :tableHeight="tableHeight">

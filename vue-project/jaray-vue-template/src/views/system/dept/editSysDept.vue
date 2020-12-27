@@ -98,8 +98,6 @@ export default {
         },
         handleChange(value) {
             let that = this
-            console.log(value);
-            console.log(that.tileDeptData)
         },
         getAllPidById: function(id, tileDeptData){
             let that = this

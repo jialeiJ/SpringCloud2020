@@ -1,5 +1,6 @@
 package com.vienna.jaray.service.system.impl;
 
+import com.baomidou.kaptcha.Kaptcha;
 import com.google.code.kaptcha.Constants;
 import com.vienna.jaray.common.HttpStatus;
 import com.vienna.jaray.common.ResponseResult;
@@ -7,6 +8,7 @@ import com.vienna.jaray.entity.system.SysUser;
 import com.vienna.jaray.entity.system.SysUserToken;
 import com.vienna.jaray.mapper.system.SysUserMapper;
 import com.vienna.jaray.security.JwtAuthenticatioToken;
+import com.vienna.jaray.service.system.KaptchaService;
 import com.vienna.jaray.service.system.SystemService;
 import com.vienna.jaray.utils.JwtTokenUtil;
 import com.vienna.jaray.utils.SecurityUtil;
@@ -33,21 +35,17 @@ public class SystemServiceImpl implements SystemService {
     private SysUserMapper sysUserMapper;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private KaptchaService kaptchaService;
 
     @Override
     public ResponseResult login(HttpServletRequest request, String username, String password, String captcha, HttpSession session) {
         ResponseResult result = ResponseResult.fail();
-        Object captchaObject = session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
-        String sessionCaptcha = "";
-        if(captchaObject == null) {
-            result.setMsg(HttpStatus.CAPTCHA_INVALID.getStatusDesc()).setCode(HttpStatus.CAPTCHA_INVALID.getStatusCode());
-            return result;
-        } else {
-            sessionCaptcha = session.getAttribute(Constants.KAPTCHA_SESSION_KEY).toString();
-        }
-        log.info("用户名[{}], session验证码[{}], 输入验证码[{}]",username, captcha, sessionCaptcha);
+        boolean validResult = kaptchaService.validDefaultTime(captcha);
+        
+        log.info("用户名[{}], session验证码[{}], 输入验证码[{}]",username, captcha);
 
-        if(!sessionCaptcha.equalsIgnoreCase(captcha)){
+        if(!validResult){
             return ResponseResult.fail().setCode(HttpStatus.CAPTCHA_ERROR.getStatusCode()).setMsg(HttpStatus.CAPTCHA_ERROR.getStatusDesc());
         }
         // 系统登录认证

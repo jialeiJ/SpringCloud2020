@@ -5,7 +5,7 @@
                 <a-input
                     placeholder="请输入姓名"
                     v-model="search"
-                    clearable style="width: 200px">
+                    clearable :style="{width: '200px'}">
                 </a-input>
                 <a-button type="success" @click="initTable" plain>查询</a-button>
                 <a-button type="success" v-if="hasPermission('sys:user:add')" @click="addSysUser" plain>增加</a-button>
@@ -13,7 +13,7 @@
             </div>
 
             <i-table ref="iTable"
-                @transmitParent="receiveChild"
+                @transmit_parent="receiveChild"
                 :tableTitle="tableTitle" 
                 :tableData="tableData"
                 :tableHeight="tableHeight">
@@ -58,19 +58,19 @@ export default {
             tableHeight: 'calc(95vh - 200px)',
             search: '',
             tableTitle: [
-                {title: 'ID', dataIndex: 'id', key: 'id'},
-                {title: '姓名', dataIndex: 'name', key: 'name', filters: []},
-                {title: '邮箱', dataIndex: 'email', key: 'email'},
-                {title: '手机号', dataIndex: 'mobile', key: 'mobile'},
-                {title: '状态', dataIndex: 'status', key: 'status', formatter: this.statusFormatter},
-                {title: '部门', dataIndex: 'deptId', key: 'deptId', formatter: this.deptFormatter},
-                {title: '角色', dataIndex: 'roleId', key: 'roleId', formatter: this.roleFormatter},
-                {title: '创建人', dataIndex: 'createBy', key: 'createBy'},
-                {title: '创建时间', dataIndex: 'createTime', key: 'createTime', formatter: this.dateTimeFormatter},
-                {title: '更新人', dataIndex: 'lastUpdateBy', key: 'lastUpdateBy'},
-                {title: '更新时间', dataIndex: 'lastUpdateTime', key: 'lastUpdateTime', formatter: this.dateTimeFormatter},
+                {title: 'ID', dataIndex: 'id', key: 'id', width: '100px', fixed: 'left'},
+                {title: '姓名', dataIndex: 'name', key: 'name', width: '100px', filters: []},
+                {title: '邮箱', dataIndex: 'email', key: 'email', width: '120px'},
+                {title: '手机号', dataIndex: 'mobile', key: 'mobile', width: '120px'},
+                {title: '状态', dataIndex: 'status', key: 'status', width: '100px', formatter: this.statusFormatter},
+                {title: '部门', dataIndex: 'deptId', key: 'deptId', width: '160px', formatter: this.deptFormatter},
+                {title: '角色', dataIndex: 'roleId', key: 'roleId', width: '160px', formatter: this.roleFormatter},
+                {title: '创建人', dataIndex: 'createBy', key: 'createBy', width: '160px'},
+                {title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: '160px', formatter: this.dateTimeFormatter},
+                {title: '更新人', dataIndex: 'lastUpdateBy', key: 'lastUpdateBy', width: '160px'},
+                {title: '更新时间', dataIndex: 'lastUpdateTime', key: 'lastUpdateTime', width: '160px', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right', width: 143,
+                {prop: 'operation', title: '操作', dataIndex: 'operation', key: 'operation', fixed: 'right', width: '120px',
                     operation: [
                         {name: '查看', style: 'primary', clickFun: this.viewSysUser, disabled: this.hasPermission('sys:user:view')},
                         {name: '修改', style: 'primary', clickFun: this.editViewSysUser, disabled: this.hasPermission('sys:user:view')},

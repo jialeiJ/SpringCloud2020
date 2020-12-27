@@ -1,38 +1,31 @@
 <template>
     <div id="edit">
-        <el-dialog title="编辑" :visible.sync="editDialogFormVisible">
-            <el-form :model="editForm">
-                <el-form-item label="任务名称" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-input v-model="editForm.jobName"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="任务组名" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-input v-model="editForm.jobGroupName"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="时间表达式" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-input v-model="editForm.jobTime"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="任务状态" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-input v-model="editForm.jobStatus"></el-input>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="任务描述" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-input v-model="editForm.description"></el-input>
-                    </el-col>
-                </el-form-item>
-            </el-form>
+        <a-modal title="编辑" 
+            :visible.sync="editDialogFormVisible"
+            @ok="handleOk"
+            @cancel="handleCancel">
+            <a-form-model :model="editForm">
+                <a-form-model-item label="任务名称" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.jobName"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="任务组名" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.jobGroupName"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="时间表达式" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.jobTime"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="任务状态" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.jobStatus"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="任务描述" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.description"></a-input>
+                </a-form-model-item>
+            </a-form-model>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="editDialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editQuartz">确 定</el-button>
+                <a-button @click="editDialogFormVisible = false">取 消</a-button>
+                <a-button type="primary" @click="editQuartz">确 定</a-button>
             </div>
-        </el-dialog>
+        </a-modal>
     </div>
 </template>
 
@@ -70,13 +63,18 @@ export default {
             QUARTZ_API.updateJob(params).then(function (result) {
                 if (result.code === 200) {
                     that.$parent.initTable()
-                    that.$message({
-                        message: '恭喜你，编辑成功',
-                        type: 'success'
-                    });
+                    that.$message.success('恭喜你，编辑成功');
                     that.editDialogFormVisible = false
                 }
             });
+        },
+        handleOk(e) {
+            let that = this
+            that.editDialogFormVisible = false;
+        },
+        handleCancel(e) {
+            let that = this
+            that.editDialogFormVisible = false;
         },
     }
 }

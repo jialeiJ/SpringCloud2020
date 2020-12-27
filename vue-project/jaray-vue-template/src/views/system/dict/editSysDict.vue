@@ -93,10 +93,7 @@ export default {
             SYS_DICT_API.updateSysDict(params).then(function (result) {
                 if (result.code === 200) {
                     that.$parent.initTable()
-                    that.$message({
-                        message: '恭喜你，编辑成功',
-                        type: 'success'
-                    });
+                    that.$message.success('恭喜你，编辑成功');
                     that.editDialogFormVisible = false
                 }
             });

@@ -13,7 +13,7 @@
                     <a-button type="danger" v-if="hasPermission('sys:dict:delete')" @click="deleteSysDict" plain>删除</a-button>
                 </div>
                 <i-table ref="iTable" 
-                    @transmitParent="receiveChild"
+                    @transmit_parent="receiveChild"
                     :tableTitle="tableTitle" 
                     :tableData="tableData"
                     :tableHeight="tableHeight">

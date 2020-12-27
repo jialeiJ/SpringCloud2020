@@ -29,8 +29,8 @@ public class SystemController {
     private SysMenuService sysMenuService;
 
     @GetMapping("/captcha.jpg")
-    public void kaptchaImage(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-        kaptchaService.kaptchaImage(request, response, session);
+    public void kaptchaImage() throws Exception {
+        kaptchaService.kaptchaImage();
     }
 
     @PostMapping("/login")

@@ -1,6 +1,16 @@
 <template>
-    <div class="page-container" style="width:99%;margin-top:15px;">
-        <a-carousel :interval="3000" arrows type="card" height="450px" class="carousel">
+    <div style="margin-top:15px;">
+        <a-carousel effect="fade" autoplay arrows>
+            <div
+                slot="prevArrow"
+                slot-scope="props"
+                class="custom-slick-arrow"
+                style="left: 10px;zIndex: 1">
+                <a-icon type="left-circle" />
+            </div>
+            <div slot="nextArrow" slot-scope="props" class="custom-slick-arrow" style="right: 10px">
+                <a-icon type="right-circle" />
+            </div>
             <div class="carousel-item-intro">
                 <h2>项目介绍</h2>
                 <ul>
@@ -8,7 +18,7 @@
                 <li>旨在提供一套简洁易用的解决方案，帮助用户有效降低项目开发难度和成本</li>
                 <li>博客提供项目开发过程同步系列教程文章，手把手的教你如何开发同类系统</li>
                 </ul>
-                <div><img src="@/assets/logo.png" style="width:200px;height:120px;padding-top:15px;" /></div>
+                <div style="text-align: -webkit-center;"><img src="@/assets/logo.png" style="width:200px;height:120px;padding-top:15px;" /></div>
             </div>
             <div class="carousel-item-func">
                 <h2>功能计划</h2>
@@ -72,104 +82,105 @@ export default {
 </script>
 
 <style scoped>
-.carousel {
-    padding-left: 20px;
-    padding-right: 20px;
-    margin-right: 20px;
-    text-align: center;
-}
-.carousel h2 {
-    color: #475669;
-    font-size: 22px;
-    opacity: 1.75;
-    line-height: 100px;
-    margin: 0;
-}
-.carousel ul {
-    color: #475669;
-    font-size: 15px;
-    opacity: 1.75;
-    line-height: 40px;
-    margin: 0;
-}
-.carousel-item-intro h2 {
-    color: #ffffff;
-    font-size: 22px;
-    opacity: 1.75;
-    line-height: 80px;
-    margin: 0;
-}
-.carousel-item-intro ul {
-    color: #ffffff;
-    font-size: 15px;
-    opacity: 1.75;
-    line-height: 65px;
-    padding: 5px;
-    margin: 0;
-}
-.carousel-item-func h2 {
-    color: #3f393b;
-    font-size: 22px;
-    opacity: 1.75;
-    line-height: 50px;
-    margin: 0;
-}
-.carousel-item-func ul {
-    color: #3f393b;
-    font-size: 15px;
-    opacity: 1.75;
-    line-height: 30px;
-    text-align: left;
-    padding-left: 90px;
-    margin: 0;
-}
-.carousel-item-env h2 {
-    color: #475669;
-    font-size: 22px;
-    opacity: 1.75;
-    line-height: 50px;
-    margin: 0;
-}
-.carousel-item-env ul {
-    color: #475669;
-    font-size: 15px;
-    opacity: 1.75;
-    line-height: 35px;
-    text-align: left;
-    padding-left: 110px;
-    margin: 0;
-}
-.carousel-item-intro {
-    background-color: #19aaaf73;
-    -webkit-border-radius: 25px;
-    border-radius: 25px;
-    -moz-border-radius: 15px;
-    background-clip: padding-box;
-    box-shadow: 0 0 25px #a3b3b965;
-}
-.carousel-item-func {
-    background-color: #19aaaf73;
-    -webkit-border-radius: 25px;
-    border-radius: 25px;
-    -moz-border-radius: 15px;
-    background-clip: padding-box;
-    box-shadow: 0 0 25px #a3b3b965;
-}
-.carousel-item-env {
-    background-color: #19aaaf73;
-    -webkit-border-radius: 25px;
-    border-radius: 25px;
-    -moz-border-radius: 15px;
-    background-clip: padding-box;
-    box-shadow: 0 0 25px #a3b3b965;
-}
-.carousel-item-intro {
-    background-color: #b95e5e;
-}
-.carousel-item-func {
-    background-color: #52c578;
-}
-.carousel-item-env {
-    background-color: #41a7b9;
-}
+    .ant-carousel >>> .slick-slide {
+        text-align: center;
+        height: 480px;
+        width:30%;
+        overflow: hidden;
+    }
+
+    .ant-carousel >>> .custom-slick-arrow {
+        width: 32px;
+        height: 32px;
+        font-size: 32px;
+        color: #fff;
+        opacity: 0.5;
+    }
+    .ant-carousel >>> .custom-slick-arrow:before {
+        display: none;
+    }
+    .ant-carousel >>> .custom-slick-arrow:hover {
+        opacity: 0.5;
+    }
+
+    .ant-carousel >>> .slick-slide h3 {
+        color: #fff;
+    }
+
+    .carousel-item-intro h2 {
+        color: #ffffff;
+        font-size: 22px;
+        opacity: 1.75;
+        line-height: 80px;
+        margin: 0;
+    }
+    .carousel-item-intro ul {
+        color: #ffffff;
+        font-size: 15px;
+        opacity: 1.75;
+        line-height: 65px;
+        padding: 5px;
+        margin: 0;
+    }
+    .carousel-item-func h2 {
+        color: #3f393b;
+        font-size: 22px;
+        opacity: 1.75;
+        line-height: 50px;
+        margin: 0;
+    }
+    .carousel-item-func ul {
+        color: #3f393b;
+        font-size: 15px;
+        opacity: 1.75;
+        line-height: 30px;
+        text-align: left;
+        padding-left: 90px;
+        margin: 0;
+    }
+    .carousel-item-env h2 {
+        color: #475669;
+        font-size: 22px;
+        opacity: 1.75;
+        line-height: 50px;
+        margin: 0;
+    }
+    .carousel-item-env ul {
+        color: #475669;
+        font-size: 15px;
+        opacity: 1.75;
+        text-align: left;
+        padding-left: 110px;
+        margin: 0;
+    }
+    .carousel-item-intro {
+        background-color: #19aaaf73;
+    }
+    .carousel-item-func {
+        background-color: #19aaaf73;
+    }
+    .carousel-item-env {
+        height: 480px;
+        width:30%;
+        border-radius: 25px;
+        background-color: #19aaaf73;
+    }
+    .carousel-item-intro {
+        height: 480px;
+        width:30%;
+        border-radius: 25px;
+        background-color: #b95e5e;
+    }
+    .carousel-item-func {
+        height: 480px;
+        width:30%;
+        border-radius: 25px;
+        background-color: #52c578;
+    }
+    .carousel-item-env {
+        height: 480px;
+        width:30%;
+        border-radius: 25px;
+        background-color: #41a7b9;
+    }
 </style>

@@ -78,7 +78,7 @@ import MENU_API from '@api/api_sys_menu'
 
 export default {
     name: 'editSysMenu',
-    props: { dirTreeData: Array },
+    props: { dirTreeData: Array, tileMenuData: Array },
     components: {},
     data () {
         return {
@@ -86,7 +86,6 @@ export default {
             formLabelWidth: 'calc(14vh - 0px)',
             editDialogFormVisible: false,
             editForm: {},
-            tileMenuData: [],
             // 菜单ids,用于回显
             menuIds: [],
             menuPids: [],
@@ -108,6 +107,7 @@ export default {
 
                      // 获取部门id的父id
                     let id = result.map.sysMenu.parentId
+                    
                     that.menuIds = []
                     that.getAllPidById(id, that.tileMenuData)
                     
@@ -144,10 +144,7 @@ export default {
             MENU_API.updateSysMenu(params).then(function (result) {
                 if (result.code === 200) {
                     that.$parent.initTable()
-                    that.$message({
-                        message: '恭喜你，编辑成功',
-                        type: 'success'
-                    });
+                    that.$message.success('恭喜你，编辑成功');
                     that.editDialogFormVisible = false
                 }
             });

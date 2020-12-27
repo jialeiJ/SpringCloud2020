@@ -14,6 +14,7 @@
                 </div>
                 <i-table ref="iTable" 
                     @transmitParent="receiveChild"
+                    @row_click="rowClick"
                     :tableTitle="tableTitle" 
                     :tableData="tableData"
                     :tableHeight="tableHeight">

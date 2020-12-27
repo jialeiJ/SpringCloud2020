@@ -13,7 +13,7 @@
                     <a-button type="danger" v-if="hasPermission('sys:menu:delete')" @click="deleteSysMenu" plain>删除</a-button>
                 </div>
                 <i-table ref="iTable" 
-                    @transmitParent="receiveChild"
+                    @transmit_parent="receiveChild"
                     :tableTitle="tableTitle" 
                     :tableData="tableData"
                     :tableHeight="tableHeight">
@@ -28,13 +28,13 @@
             </div>
 
             <!-- 新增 -->
-            <add-sys-menu ref="addSysMenu" :dirTreeData="dirTreeData"></add-sys-menu>
+            <add-sys-menu ref="addSysMenu" :dirTreeData="dirTreeData" :tileMenuData="tileMenuData"></add-sys-menu>
 
             <!-- 详情 -->
-            <view-sys-menu ref="viewSysMenu" :dirTreeData="dirTreeData"></view-sys-menu>
+            <view-sys-menu ref="viewSysMenu" :dirTreeData="dirTreeData" :tileMenuData="tileMenuData"></view-sys-menu>
 
             <!-- 编辑 -->
-            <edit-sys-menu ref="editSysMenu" :dirTreeData="dirTreeData"></edit-sys-menu>
+            <edit-sys-menu ref="editSysMenu" :dirTreeData="dirTreeData" :tileMenuData="tileMenuData"></edit-sys-menu>
         </div>
     </div>
 </template>
@@ -60,18 +60,18 @@ export default {
             editDialogFormVisible: false,
             search: '',
             tableTitle: [
-                {title: 'ID', dataIndex: 'id', key: 'id'},
-                {title: '名称', dataIndex: 'name', key: 'name', filters: []},
-                {title: '类型', dataIndex: 'type', key: 'type', formatter: this.typeFormatter, renderComponent: 'tag'},
-                {title: '链接', dataIndex: 'url', key: 'url'},
-                {title: '图标', dataIndex: 'icon', key: 'icon'},
-                {title: '排序', dataIndex: 'orderNum', key: 'orderNum'},
-                {title: '创建人', dataIndex: 'createBy', key: 'createBy'},
-                {title: '创建时间', dataIndex: 'createTime', key: 'createTime', formatter: this.dateTimeFormatter},
-                {title: '更新人', dataIndex: 'lastUpdateBy', key: 'lastUpdateBy'},
-                {title: '更新时间', dataIndex: 'lastUpdateTime', key: 'lastUpdateTime', formatter: this.dateTimeFormatter},
+                {title: 'ID', dataIndex: 'id', key: 'id', fixed: true, width: '120px'},
+                {title: '名称', dataIndex: 'name', key: 'name', width: '160px', filters: []},
+                {title: '类型', dataIndex: 'type', key: 'type', width: '160px', formatter: this.typeFormatter, tagRender: this.tagRender},
+                {title: '链接', dataIndex: 'url', key: 'url', width: '240px'},
+                {title: '图标', dataIndex: 'icon', key: 'icon', width: '160px'},
+                {title: '排序', dataIndex: 'orderNum', key: 'orderNum', width: '160px'},
+                {title: '创建人', dataIndex: 'createBy', key: 'createBy', width: '160px'},
+                {title: '创建时间', dataIndex: 'createTime', key: 'createTime', width: '160px', formatter: this.dateTimeFormatter},
+                {title: '更新人', dataIndex: 'lastUpdateBy', key: 'lastUpdateBy', width: '160px'},
+                {title: '更新时间', dataIndex: 'lastUpdateTime', key: 'lastUpdateTime', width: '160px', formatter: this.dateTimeFormatter},
                 // 此处为操作栏，不需要可以删除，clickFun绑定此操作按钮的事件
-                {prop: 'operation', label: '操作', fixed: 'right', width: 143,
+                {prop: 'operation', label: '操作', fixed: 'right', width: '120px',
                     operation: [
                         {name: '查看', style: 'primary', clickFun: this.viewSysMenu, disabled: this.hasPermission('sys:menu:view')},
                         {name: '修改', style: 'primary', clickFun: this.editViewSysMenu, disabled: this.hasPermission('sys:menu:edit')},
@@ -116,23 +116,35 @@ export default {
                     that.total = result.map.sysMenus.total
                     that.currentPage = result.map.sysMenus.pageNum
                     that.pageSize = result.map.sysMenus.pageSize
+                    // 删除children为空的属性
+                    that.deleteEmptyChildren(result.map.sysMenus.list);
                     that.tableData = result.map.sysMenus.list
 
+                    // 平铺数据
                     that.tileMenuList(result.map.sysMenus.list)
 
-                    // 解决双向修改问题
-                    //JSON.parse(JSON.stringify(result.map.sysMenus.list))
+                    // 解决双向修改问题：JSON.parse(JSON.stringify(result.map.sysMenus.list))
                     let dirTreeData = JSON.parse(JSON.stringify(result.map.sysMenus.list))
                     let data = dirTreeData.filter(function(item){
                         return item.type == 0
                     })
                     that.dirTreeData = data
                     that.getDirTreeData(that.dirTreeData)
-                    console.log(that.dirTreeData)
 
                     that.filtersHandler(that.tableData)
                 }
             });
+        },
+        deleteEmptyChildren(tableData) {
+            let that = this
+            tableData.forEach(function(item, index) {
+                if (item.children.length > 0) {
+                    that.deleteEmptyChildren(item.children);
+                } else {
+                    that.$delete(item, 'children');
+                }
+            })
+            that.tableData = tableData
         },
         receiveChild: function(data){
             let that = this
@@ -202,6 +214,14 @@ export default {
             }
 
             return this.$moment(cellValue).format('YYYY-MM-DD HH:mm:ss');
+        },
+        tagRender: function(row, column, cellValue, index) {
+            if (cellValue == 0) {
+                return 'blue'
+            }
+            if (cellValue == 1) {
+                return 'green'
+            }
         },
         handleSizeChange: function(pageSize){
             let that = this
@@ -297,9 +317,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 /deep/ .el-dialog .el-dialog__body {
-  border-top: 1px solid #dcdfe6;
-  border-bottom: 1px solid #dcdfe6;
-  max-height: calc(85vh - 260px); 
-  overflow-y: auto;
+    border-top: 1px solid #dcdfe6;
+    border-bottom: 1px solid #dcdfe6;
+    max-height: calc(85vh - 260px); 
+    overflow-y: auto;
 }
 </style>

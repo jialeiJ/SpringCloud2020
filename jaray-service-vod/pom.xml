@@ -224,11 +224,17 @@
             <version>${bootstrap.version}</version>
         </dependency>
         <!-- kaptcha -->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
             <version>${kcaptcha.version}</version>
-        </dependency>
+        </dependency> -->
+        <!-- kaptcha-spring-boot-starter -->
+		<dependency>
+		    <groupId>com.baomidou</groupId>
+		    <artifactId>kaptcha-spring-boot-starter</artifactId>
+		    <version>1.1.0</version>
+		</dependency>
         <!-- 模板页面相关end -->
         
 

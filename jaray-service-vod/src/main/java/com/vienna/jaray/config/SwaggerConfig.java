@@ -47,14 +47,6 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build().globalOperationParameters(parameters);
-		
-//        return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
-//                // 是否开启，生产环境建议隐藏
-//                .enable(enableSwagger)
-//                .pathMapping("/")
-//                .select()
-//                .apis(RequestHandlerSelectors.any())
-//                .paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo(){

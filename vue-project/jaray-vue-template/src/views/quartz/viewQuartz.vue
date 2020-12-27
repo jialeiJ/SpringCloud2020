@@ -56,11 +56,11 @@ export default {
         },
         handleOk(e) {
             let that = this
-            that.addDialogFormVisible = false;
+            that.viewDialogFormVisible = false;
         },
         handleCancel(e) {
             let that = this
-            that.addDialogFormVisible = false;
+            that.viewDialogFormVisible = false;
         },
     }
 }

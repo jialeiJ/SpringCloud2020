@@ -84,11 +84,8 @@ export default {
             // 调用接口
             SYS_DICT_API.addSysDict(params).then(function (result) {
                 if (result.code === 200) {
-                    that.initTable()
-                    that.$parent.$message({
-                        message: '恭喜你，添加成功',
-                        type: 'success'
-                    });
+                    that.$parent.initTable()
+                    that.$message.success('恭喜你，添加成功');
                     that.addDialogFormVisible = false
                     that.addForm = {}
                 }

@@ -1,23 +1,23 @@
 <template>
-    <a-layout id="components-layout-demo-top-side-2">
-        <a-layout-header class="header">
+    <a-layout id="components-layout-demo-responsive" style="min-height: 100vh">
+        <a-layout-sider 
+            collapsible 
+            v-model="collapsed">
             <div class="logo" />
-            <!-- <a-icon
-                class="trigger"
-                :type="collapsed ? 'menu-unfold' : 'menu-fold'"
-                @click="() => (collapsed = !collapsed)"/> -->
-            <head-nav @addTab="addTab"></head-nav>
-        </a-layout-header>
+            <left-nav @add_tab="addTab"></left-nav>
+        </a-layout-sider>
         <a-layout>
-            <a-layout-sider v-model="collapsed" collapsible style="background: #fff">
-                <left-nav @addTab="addTab"></left-nav>
-            </a-layout-sider>
-            <a-layout>
-                <a-layout-content 
-                    :style="{ margin: '12px 8px', padding: '12px', background: '#fff', minHeight: '280px' }">
+            <a-layout-header :style="{ background: '#fff', padding: 0 }">
+                <head-nav @add_tab="addTab"></head-nav>
+            </a-layout-header>
+            <a-layout-content :style="{ margin: '12px 8px 0', overflow: 'initial' }">
+                <div :style="{ padding: '12px', background: '#fff' }">
                     <i-tabs ref="iTabs"></i-tabs>
-                </a-layout-content>
-            </a-layout>
+                </div>
+            </a-layout-content>
+            <a-layout-footer :style="{ textAlign: 'center', position: 'fixed', bottom: '0px', width: '100%' }">
+                Ant Design ©2018 Created by Ant UED
+            </a-layout-footer>
         </a-layout>
     </a-layout>
 </template>
@@ -53,16 +53,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// 布局高度100%
-.ant-layout.ant-layout-has-sider {
-    height: 100%;
+#components-layout-demo-responsive .logo {
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px;
 }
 
-#components-layout-demo-top-side-2 .logo {
-  width: 120px;
-  height: 31px;
-  background: rgba(255, 255, 255, 0.2);
-  margin: 16px 28px 16px 0;
-  float: left;
+/deep/ .ant-layout-footer {
+    padding: 14px 25px;
+    color: rgba(0, 0, 0, 0.65);
+    font-size: 14px;
+    background: #f0f2f5;
 }
 </style>

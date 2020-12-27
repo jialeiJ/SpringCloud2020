@@ -25,18 +25,21 @@
     </a-menu>
 
     <div id="edit">
-        <a-modal title="修改密码" :visible.sync="editDialogFormVisible">
-            <a-form :model="editForm" :rules="rules" ref="editForm">
-                <a-form-modal-item label="原始密码" prop="srcPassword" :label-width="formLabelWidth">
-                    <a-input type="password" v-model="editForm.srcPassword" autocomplete="off"></a-input>
-                </a-form-modal-item>
-                <a-form-modal-item label="密码" prop="password" :label-width="formLabelWidth">
-                    <a-input type="password" v-model="editForm.password" autocomplete="off"></a-input>
-                </a-form-modal-item>
-                <a-form-modal-item label="确认密码" prop="password2" :label-width="formLabelWidth">
-                    <a-input type="password" v-model="editForm.password2" autocomplete="off"></a-input>
-                </a-form-modal-item>
-            </a-form>
+        <a-modal title="修改密码" 
+            :visible.sync="editDialogFormVisible"
+            @ok="handleOk"
+            @cancel="handleCancel">
+            <a-form-model :model="editForm" ref="editForm" :rules="rules" :label-col="labelCol" :wrapper-col="wrapperCol">
+                <a-form-model-item label="原始密码" prop="srcPassword">
+                    <a-input type="password" v-model="editForm.srcPassword" has-feedback autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="密码" prop="password">
+                    <a-input type="password" v-model="editForm.password" has-feedback autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="确认密码" prop="checkPass">
+                    <a-input type="password" v-model="editForm.checkPass" has-feedback autocomplete="off"></a-input>
+                </a-form-model-item>
+            </a-form-model>
             <div slot="footer" class="dialog-footer">
                 <a-button @click="editDialogFormVisible = false">取 消</a-button>
                 <a-button type="primary" @click="editPassword('editForm')">确 定</a-button>
@@ -85,7 +88,7 @@ export default {
     components: { SubMenu },
     name: 'HeadNav',
     data () {
-        var validatePass = (rule, value, callback) => {
+        let validatePass = (rule, value, callback) => {
             if (value === '') {
                 callback(new Error('请输入密码'));
             } else {
@@ -95,17 +98,19 @@ export default {
                 callback();
             }
         };
-        var validatePass2 = (rule, value, callback) => {
+        let validatePass2 = (rule, value, callback) => {
+            let that = this
             if (value === '') {
-                callback(new Error('请再次输入密码'));
-            } else if (value !== this.editForm.password) {
-                callback(new Error('两次输入密码不一致!'));
+                callback(new Error('请确认密码'));
+            } else if (value !== that.editForm.password) {
+                callback(new Error("密码不一致!"));
             } else {
                 callback();
             }
         };
         return { 
-            formLabelWidth: '120px',
+            labelCol: { span: 4 },
+            wrapperCol: { span: 14 },
             editDialogFormVisible: false,
             tileLeftNavData: [],
             userInfo: {
@@ -115,15 +120,11 @@ export default {
                 id: '',
                 srcPassword: '',
                 password: '',
-                password2: ''
+                checkPass: ''
             },
             rules: {
-                password: [
-                    { validator: validatePass, trigger: 'blur' }
-                ],
-                password2: [
-                    { validator: validatePass2, trigger: 'blur' }
-                ]
+                password: [{ required: true, validator: validatePass, trigger: 'change' }],
+                checkPass: [{ required: true, validator: validatePass2, trigger: 'change' }],
             }
         }
     },
@@ -139,7 +140,7 @@ export default {
             that.editForm.id = that.userInfo.user_id
         },
         editPassword: function(formName){
-            this.$refs[formName].validate((valid) => {
+            this.$refs[formName].validate(valid => {
                 if (valid) {
                     return false;
                     let that = this
@@ -187,11 +188,14 @@ export default {
                 let obj = that.tileLeftNavData.filter(function(item){
                     return item.url == key;
                 })
-                params.title = obj[0].label
-                params.path = obj[0].url
 
-                //通过 emit 触发
-                this.$emit('addTab', params)
+                if (obj.length > 0) {
+                    params.title = obj[0].label
+                    params.path = obj[0].url
+
+                    //通过 emit 触发
+                    this.$emit('add_tab', params)
+                }
             }
         },
         // 平铺数据
@@ -210,6 +214,14 @@ export default {
             // this.$router.push({
             //     path: key
             // })
+        },
+        handleOk(e) {
+            let that = this
+            that.editDialogFormVisible = false;
+        },
+        handleCancel(e) {
+            let that = this
+            that.editDialogFormVisible = false;
         },
         ...mapActions( // 语法糖
             ['modifyCollapsed'] // 相当于this.$store.dispatch('modifyCollapsed'),提交这个方法
@@ -262,7 +274,6 @@ export default {
 <style lang="scss" scoped>
 /deep/ .ant-menu-submenu,.ant-menu-item {
   line-height: 64px;
-  padding: 0 12px;
   cursor: pointer;
   transition: color 0.3s;
 }

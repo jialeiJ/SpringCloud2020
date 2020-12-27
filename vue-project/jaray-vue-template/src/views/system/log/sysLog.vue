@@ -13,7 +13,7 @@
                     <a-button v-if="false" type="danger" @click="deleteSysLog" plain>删除</a-button>
                 </div>
                 <i-table ref="iTable" 
-                    @transmitParent="receiveChild"
+                    @transmit_parent="receiveChild"
                     :tableTitle="tableTitle" 
                     :tableData="tableData"
                     :tableHeight="tableHeight">

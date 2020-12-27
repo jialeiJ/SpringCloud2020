@@ -1,82 +1,49 @@
 <template>
     <div id="edit">
-        <!-- <el-dialog title="编辑" :visible.sync="editDialogFormVisible">
-            <el-form :model="editForm">
-                <el-form-item label="ID" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.id" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="姓名" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.name" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="部门" :label-width="formLabelWidth">
-                    <el-cascader
-                        v-model="editForm.deptIds"
-                        :options="deptOptions"
-                        :props="{ expandTrigger: 'hover', checkStrictly: true }"
-                        @change="handleChange"></el-cascader>
-                </el-form-item>
-                <el-form-item label="角色" :label-width="formLabelWidth">
-                    <el-col :span="24">
-                        <el-select v-model="roleIds" multiple placeholder="请选择角色">
-                            <el-option
-                            v-for="item in sysRoleList"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-col>
-                </el-form-item>
-                <el-form-item label="邮箱" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.email" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="手机号" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.mobile" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="状态" :label-width="formLabelWidth">
-                    <el-select v-model="editForm.status" placeholder="请选择状态">
-                        <el-option
-                        v-for="item in statusOptions"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="创建人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.createBy" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="创建时间" :label-width="formLabelWidth">
-                    <el-date-picker
-                        v-model="editForm.createTime"
-                        type="datetime"
-                        placeholder="选择日期时间"
-                        align="right"
-                        format="yyyy-MM-dd HH:mm:ss"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :picker-options="pickerOptions">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="更新人" :label-width="formLabelWidth">
-                    <el-input v-model="editForm.lastUpdateBy" autocomplete="off"></el-input>
-                </el-form-item>
-                <el-form-item label="更新时间" :label-width="formLabelWidth">
-                    <el-date-picker
-                        v-model="editForm.lastUpdateTime"
-                        type="datetime"
-                        placeholder="选择日期时间"
-                        align="right"
-                        format="yyyy-MM-dd HH:mm:ss"
-                        value-format="yyyy-MM-dd HH:mm:ss"
-                        :picker-options="pickerOptions">
-                    </el-date-picker>
-                </el-form-item>
-            </el-form>
+        <a-modal title="编辑" 
+            :visible.sync="editDialogFormVisible"
+            @ok="handleOk"
+            @cancel="handleCancel">
+            <a-form-model :model="editForm">
+                <a-form-model-item label="ID" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="姓名" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.name" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="部门" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="角色" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="邮箱" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.email" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="手机号" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.mobile" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="状态" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="创建人" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.createBy" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="创建时间" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="更新人" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.lastUpdateBy" autocomplete="off"></a-input>
+                </a-form-model-item>
+                <a-form-model-item label="更新时间" :label-width="formLabelWidth">
+                    <a-input v-model="editForm.id" autocomplete="off"></a-input>
+                </a-form-model-item>
+            </a-form-model>
             <div slot="footer" class="dialog-footer">
-                <el-button @click="editDialogFormVisible = false">取 消</el-button>
-                <el-button type="primary" @click="editSysUser">确 定</el-button>
+                <a-button @click="editDialogFormVisible = false">取 消</a-button>
+                <a-button type="primary" @click="editSysUser">确 定</a-button>
             </div>
-        </el-dialog> -->
+        </a-modal>
     </div>
 </template>
 
@@ -94,28 +61,6 @@ export default {
             formLabelWidth: 'calc(14vh - 0px)',
             editDialogFormVisible: false,
             editForm: {},
-            pickerOptions: {
-                shortcuts: [{
-                    text: '今天',
-                    onClick(picker) {
-                        picker.$emit('pick', new Date());
-                    }
-                }, {
-                    text: '昨天',
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24);
-                        picker.$emit('pick', date);
-                    }
-                }, {
-                    text: '一周前',
-                    onClick(picker) {
-                        const date = new Date();
-                        date.setTime(date.getTime() - 3600 * 1000 * 24 * 7);
-                        picker.$emit('pick', date);
-                    }
-                }]
-            },
             deptIds: [],
             roleIds: [],
         }
@@ -186,6 +131,14 @@ export default {
                     that.editDialogFormVisible = false
                 }
             });
+        },
+        handleOk(e) {
+            let that = this
+            that.addDialogFormVisible = false;
+        },
+        handleCancel(e) {
+            let that = this
+            that.addDialogFormVisible = false;
         },
     }
 }

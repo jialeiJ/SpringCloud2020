@@ -3,6 +3,7 @@
         mode="inline"
         theme="light"
         @select="addTab"
+        @click="addTab"
         :inline-collapsed="collapsed">
         <!-- 菜单遍历的开始 -->
         <template v-for="(item, index) in leftMenus">
@@ -91,7 +92,7 @@ export default {
             params.path = obj[0].url
 
             //通过 emit 触发
-            this.$emit('addTab', params)
+            this.$emit('add_tab', params)
         },
         // 平铺数据
         tileLeftNav(leftNavData){
