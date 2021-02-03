@@ -188,10 +188,18 @@ export default {
             let that = this
             that.$refs.iTree.allChecked() 
         },
-        resetTreeChecked: function(row){
+        resetTreeChecked: function(){
             let that = this
-            let permKeys = that.menuPerm.permId.split(",")
-            let menuKeys = that.menuPerm.menuId.split(",")
+            let permKeys = [];
+            if (that.menuPerm.permId != '') {
+                permKeys = that.menuPerm.permId.split(",")
+            } 
+            let menuKeys = [];
+            if (that.menuPerm.menuId != '') {
+                menuKeys = that.menuPerm.menuId.split(",")
+            } 
+            
+            
             
             for(var i=0;i<menuKeys.length;i++){
                 for(var j=0;j<permKeys.length;j++){
@@ -227,10 +235,7 @@ export default {
             ROLE_MENU_PERM_API.updateSysRoleMenuPerm(params).then(function (result) {
                 if (result.code === 200) {
                     that.initTable()
-                    that.$message({
-                        message: '恭喜你，编辑成功',
-                        type: 'success'
-                    });
+                    that.$message.success('恭喜你，编辑成功');
                     // 刷新左侧菜单（自己不能修改自己，所以不用刷新）
                     //that.refreshFindLeftNav()
                 }
